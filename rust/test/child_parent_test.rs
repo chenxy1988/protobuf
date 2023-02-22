@@ -28,9 +28,10 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-//! Rust Protobuf Runtime
-
-// Not yet implemented.
-
-// TODO(b/270138878): Remove once we have real logic in the runtime.
-pub fn do_nothing() {}
+fn main() {
+    let _child = child_proto::Child {};
+    let _parent = parent_proto::Parent {};
+    // Parent from child_proto crate should be the same type as Parent from
+    // parent_proto crate.
+    let _parent_from_child: child_proto::Parent = parent_proto::Parent {};
+}

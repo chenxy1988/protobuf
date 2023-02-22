@@ -28,9 +28,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-//! Rust Protobuf Runtime
-
-// Not yet implemented.
-
-// TODO(b/270138878): Remove once we have real logic in the runtime.
-pub fn do_nothing() {}
+fn main() {
+    let _hello = hello_world_proto::Hello {};
+    let _world = hello_world_proto::World {};
+}
