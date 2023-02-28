@@ -567,6 +567,20 @@ bool WireFormat::ParseAndMergeField(
       // Handle strings separately so that we can optimize the ctype=CORD case.
       case FieldDescriptor::TYPE_STRING: {
         bool strict_utf8_check = StrictUtf8Check(field);
+        if (field->options().ctype() == FieldOptions::CORD &&
+            !field->is_repeated() &&
+            field->type() == FieldDescriptor::TYPE_BYTES) {
+          absl::Cord value;
+          if (!WireFormatLite::ReadString(input, &value)) return false;
+          if (strict_utf8_check) {
+            if (!WireFormatLite::VerifyUtf8Cord(value, WireFormatLite::PARSE,
+                                                field->full_name().c_str())) {
+              return false;
+            }
+          } else {
+            VerifyUTF8CordNamedField(value, PARSE, field->full_name().c_str());
+          }
+        }
         std::string value;
         if (!WireFormatLite::ReadString(input, &value)) return false;
         if (strict_utf8_check) {
