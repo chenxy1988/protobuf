@@ -140,10 +140,6 @@ inline bool IsWrapperType(const FieldDescriptor* descriptor) {
       descriptor->message_type()->file()->name() == "google/protobuf/wrappers.proto";
 }
 
-inline bool IsProto2(const FileDescriptor* descriptor) {
-  return descriptor->syntax() == FileDescriptor::SYNTAX_PROTO2;
-}
-
 inline bool SupportsPresenceApi(const FieldDescriptor* descriptor) {
   // Unlike most languages, we don't generate Has/Clear members for message
   // types, because they can always be set to null in C#. They're not really
@@ -159,9 +155,8 @@ inline bool SupportsPresenceApi(const FieldDescriptor* descriptor) {
       descriptor->type() == FieldDescriptor::TYPE_MESSAGE) {
     return false;
   }
-  // has_optional_keyword() has more complex rules for proto2, but that
-  // doesn't matter given the first part of this condition.
-  return IsProto2(descriptor->file()) || descriptor->has_optional_keyword();
+
+  return descriptor->has_presence();
 }
 
 inline bool RequiresPresenceBit(const FieldDescriptor* descriptor) {
