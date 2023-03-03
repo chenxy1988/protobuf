@@ -370,12 +370,7 @@ inline bool HasHazzer(const FieldDescriptor* descriptor) {
 }
 
 inline bool HasHasbit(const FieldDescriptor* descriptor) {
-  // Note that currently message fields inside oneofs have hasbits. This is
-  // surprising, as the oneof case should avoid any need for a hasbit. But if
-  // you change this method to remove hasbits for oneofs, a few tests fail.
-  // TODO(b/124347790): remove hasbits for oneofs
-  return !descriptor->is_repeated() &&
-         (descriptor->has_optional_keyword() || IsProto2(descriptor->file()));
+  return internal::cpp::HasHasbit(descriptor);
 }
 
 // Whether generate classes expose public PARSER instances.
